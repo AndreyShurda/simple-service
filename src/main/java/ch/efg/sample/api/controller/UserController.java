@@ -22,31 +22,32 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<List<User>> getUsersById(@PathVariable("id") String id) {
         List<User> users = userService.findById(id);
-        return new ResponseEntity<List<User>>(users, HttpStatus.OK);
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     @GetMapping
     public ResponseEntity<List<User>> getUsers() {
         List<User> users = userService.findAll();
-        return new ResponseEntity<List<User>>(users, HttpStatus.OK);
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<Void> addUser(@RequestBody User user, UriComponentsBuilder builder) {
+        userService.save(user);
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(builder.path("/{id}").buildAndExpand(user.getId()).toUri());
-        return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
     @PutMapping
     public ResponseEntity<User> updateUser(@RequestBody User user) {
         User save = userService.save(user);
-        return new ResponseEntity<User>(save, HttpStatus.OK);
+        return new ResponseEntity<>(save, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<User> deleteUser(@PathVariable("id") String id) {
         User user = userService.delete(id);
-        return new ResponseEntity<User>(user, HttpStatus.OK);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 }
